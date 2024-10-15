@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mate-Plus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #000;
+            text-align: center;
+            padding: 50px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        video {
+            width: 80%;
+            max-width: 800px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 600px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .donation-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .donation-section input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .donation-section input[readonly] {
+            background-color: #f9f9f9;
+        }
+        .menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .menu button {
+            background-color: #1b1a1a;
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .menu-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .menu-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .menu-content a:hover {
+            background-color: #ddd;
+        }
+        .section {
+            display: none;
+            margin-top: 30px;
+        }
+        .section.active {
+            display: block;
+        }
+        .section .search-bar {
+            margin-bottom: 20px;
+        }
+        .section .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 600px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .games-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .games-list li {
+            margin: 10px 0;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #fff;
+        }
+        .dark-mode .donation-section {
+            background-color: #333;
+            border-color: #444;
+        }
+        .dark-mode .menu button {
+            background-color: #444;
+        }
+        .dark-mode .menu-content {
+            background-color: #333;
+        }
+        .dark-mode .menu-content a {
+            color: white;
+        }
+        .dark-mode .menu-content a:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenido a Mate-Plus</h1>
+    <h2>Disfruta de tus películas caseras</h2>
+    
+    <div class="search-bar section active" id="moviesSection">
+        <input type="text" id="searchInput" onkeyup="searchMovie()" placeholder="Buscar película...">
+    </div>
+    
+    <div id="movieList" class="section active">
+        <video controls>
+            <source src="videoplayback.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
+        <video controls>
+            <source src="videoplayback1.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video> 
+        <video controls>
+            <source src="y2mate.com - DISTRITO 9_360P" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
+    </div>
+
+    <div class="donation-section">
+        <h3>Apoya al desarrollador</h3>
+        <p>Las donaciones son opcionales y ayudan a mejorar el proyecto.</p>
+        <input type="text" value="0000003100069823242248" readonly onclick="copyCVU()">
+    </div>
+
+    <div class="menu">
+        <button onclick="toggleMenu()">☰</button>
+        <div id="menuContent" class="menu-content">
+            <a href="mailto:alonsofredy794@gmail.com">Contactar al desarrollador</a>
+            <a href="#" onclick="showSection('gamesSection')">Juegos</a>
+            <!-- Las otras dos opciones se pueden agregar aquí más tarde -->
+        </div>
+    </div>
+
+    <button onclick="toggleDarkMode()">Modo Oscuro</button>
+
+    <div id="gamesSection" class="section">
+        <h2>Juegos</h2>
+        <div class="search-bar">
+            <input type="text" id="searchGameInput" onkeyup="searchGame()" placeholder="Buscar juego...">
+        </div>
+        <ul id="gamesList" class="games-list">
+            <li><a href="FNAF1.exe" download>Five Nights at Freddy's 1</a></li>
+            <li><a href="FNAF2.exe" download>Five Nights at Freddy's 2</a></li>
+            <li><a href="FNAF3.exe" download>Five Nights at Freddy's 3</a></li>
+            <li><a href="Sonic 1 Android.apk" download>Sonic 1 android</a></li>
+            <li><a href="Sonic 2 android.apk" download>Sonic 2 android</a></li>
+            <!-- Agrega más juegos aquí -->
+        </ul>
+    </div>
+
+    <script>
+        function searchMovie() {
+            var input, filter, movieList, video, source, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            movieList = document.getElementById("movieList");
+            video = movieList.getElementsByTagName('video');
+            for (i = 0; i < video.length; i++) {
+                source = video[i].getElementsByTagName('source')[0];
+                txtValue = source.src || source.getAttribute('src');
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    video[i].style.display = "";
+                } else {
+                    video[i].style.display = "none";
+                }
+            }
+        }
+
+        function copyCVU() {
+            var cvuInput = document.querySelector('.donation-section input');
+            cvuInput.select();
+            document.execCommand('copy');
+            alert('CVU copiado: ' + cvuInput.value);
+        }
+
+        function toggleMenu() {
+            var menuContent = document.getElementById("menuContent");
+            if (menuContent.style.display === "block") {
+                menuContent.style.display = "none";
+            } else {
+                menuContent.style.display = "block";
+            }
+        }
+
+        function showSection(sectionId) {
+            var sections = document.getElementsByClassName('section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function searchGame() {
+            var input, filter, gamesList, li, a, i, txtValue;
+            input = document.getElementById('searchGameInput');
+            filter = input.value.toUpperCase();
+            gamesList = document.getElementById("gamesList");
+            li = gamesList.getElementsByTagName('li');
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName('a')[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
