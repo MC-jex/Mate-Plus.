@@ -3,315 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mate-Plus</title>
-    <link rel="icon" type="image/jpg" href="favicon.png">
-    <button onclick="toggleDarkMode()">Modo Oscuro</button>
-    <!-- Código de Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2414583241100203" crossorigin="anonymous"></script>
-    <meta name="google-adsense-account" content="ca-pub-2414583241100203">
-    <meta name="google-site-verification" content="tu-codigo-de-verificacion">
-   <style> 
+    <title>Conversor de Unidades</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Estilos similares al ejemplo anterior */
         body {
             font-family: Arial, sans-serif;
-            background-color: #e2dfdf;
-            color: #000;
+            background: linear-gradient(to right, #6dd5ed, #2193b0);
+            color: #fff;
             text-align: center;
-            padding: 50px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        video {
-            width: 80%;
-            max-width: 800px;
-            border: 2px solid #333;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .search-bar {
-            margin-bottom: 20px;
-        }
-
-        .search-bar input {
-            padding: 10px;
-            font-size: 16px;
-            width: 80%;
-            max-width: 600px;
-            border: 1px solid #cccccc38;
-            border-radius: 5px;
-        }
-
-        .donation-section {
-            margin-top: 30px;
             padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ccc;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: slideDown 1s ease-out;
+        }
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: slideDown 3s ease-out;
+        }
+
+        .converter {
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            display: inline-block;
+            padding: 20px;
+            margin: 10px auto;
+            max-width: 400px;
+            animation: scaleIn 1s ease-out;
         }
 
-        .donation-section input {
-            width: 100%;
+        label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        input, select, button {
+            font-size: 1rem;
             padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .donation-section input[readonly] {
-            background-color: #f9f9f9;
-        }
-
-        .menu {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
-        .menu button {
-            background-color: #1b1a1a;
-            color: rgb(255, 255, 255);
+            margin: 10px 0;
             border: none;
-            padding: 15px;
             border-radius: 5px;
+            width: calc(100% - 22px);
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            background-color: #87ceeb;
+            transform: scale(1.05);
+        }
+
+        button {
+            background: #2193b0;
+            color: white;
             cursor: pointer;
         }
 
-        .menu-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: white;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
+        button:hover {
+            background: #6dd5ed;
+            transform: scale(1.1);
+            animation: bounce 0.5s ease-in-out;
         }
 
-        .menu-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
+        .result {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            animation: fadeIn 1s ease-out;
         }
 
-        .menu-content a:hover {
-            background-color: #ddd;
+        /* Animaciones */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
-        .section {
-            display: none;
-            margin-top: 30px;
+        @keyframes slideDown {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
 
-        .section.active {
-            display: block;
+        @keyframes scaleIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .section .search-bar {
-            margin-bottom: 20px;
-        }
-
-        .section .search-bar input {
-            padding: 10px;
-            font-size: 16px;
-            width: 80%;
-            max-width: 600px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .games-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .games-list li {
-            margin: 10px 0;
-        }
-
-        .dark-mode {
-            background-color: #121212;
-            color: #fff;
-        }
-
-        .dark-mode .donation-section {
-            background-color: #333;
-            border-color: #444;
-        }
-
-        .dark-mode .menu button {
-            background-color: #444;
-        }
-
-        .dark-mode .menu-content {
-            background-color: #333;
-        }
-
-        .dark-mode .menu-content a {
-            color: white;
-        }
-
-        .dark-mode .menu-content a:hover {
-            background-color: #555;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
     </style>
 </head>
 <body>
-    <h1>Mate-Plus</h1>
-    <h2>Disfruta del contenido clasico</h2>
-    <h3>Creado por jona</h3>
+    <audio autoplay>
+        <source src="tranca.mp3" type="audio/mpeg">
+        Tu navegador no soporta reproducción de audio.
+    </audio>
 
-    <div class="search-bar section active" id="moviesSection">
-        <input type="text" id="searchInput" onkeyup="searchMovie()" placeholder="Buscador...">
-    </div>
+    <h1>Conversor de Unidades</h1>
+    <h3>echo por jona</h2>
+    <div class="converter">
+        <label for="inputValue">Introduce un valor:</label>
+        <input type="number" id="inputValue" placeholder="Ej: 100" />
 
-    <div id="movieList" class="section active">
-        <video controls>
-            <source src="Keyboard Cat! - THE ORIGINAL!.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="pokemon.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="minecraft.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="La Caida de Edgar (el original).mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="Mr. Trololo original upload.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="Star Wars Kid.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="David After Dentist.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="videoplayback (4).mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="videoplayback (5).mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="videoplayback (6).mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="Daft Hands - Harder, Better, Faster, Stronger.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="GTA_SA.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <video controls>
-            <source src="terror.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-         </div>
-    <div class="donation-section">
-        <h3>Apoya al desarrollador</h3>
-        <p>Las donaciones son opcionales y ayudan a mejorar el proyecto.</p>
-        <input type="text" value="0000003100069823242248" readonly onclick="copyCVU()">
-    </div>
+        <label for="unitType">Selecciona una conversión:</label>
+        <select id="unitType">
+            <option value="cToF">Celsius a Fahrenheit</option>
+            <option value="fToC">Fahrenheit a Celsius</option>
+            <option value="kmToMi">Kilómetros a Millas</option>
+            <option value="miToKm">Millas a Kilómetros</option>
+            <option value="mToCm">Metros a Centímetros</option>
+            <option value="cmToM">Centímetros a Metros</option>
+        </select>
 
-    <div class="menu">
-        <button onclick="toggleMenu()">☁Juegos 7w7</button>
-        <div id="menuContent" class="menu-content">
-            <a href="mailto:alonsofredy794@gmail.com">Contactar al desarrollador</a>
-            <a href="#" onclick="showSection('gamesSection')">Juegos</a>
-            <!-- Las otras dos opciones se pueden agregar aquí más tarde -->
-        </div>
-    </div>
-
-    <div id="gamesSection" class="section">
-        <h2>Juegos</h2>
-        <div class="search-bar">
-            <input type="text" id="searchGameInput" onkeyup="searchGame()" placeholder="Buscar juego...">
-        </div>
-        <ul id="gamesList" class="games-list">
-            <li><a href="https://drive.google.com/file/d/1hrK8yB3p25z82kP_8XctYBpuf5QP4Wot/view?usp=drive_link">Five Nights at Freddy's 1</a></li>
-            <li><a href="https://drive.google.com/file/d/16F70t5MjIh9GIK2JzjaQ26n6zd4otgvC/view?usp=sharing" target="_blank">Sonic 1 Android</a></li>
-            <li><a href="Sonic 2 android.apk" download>Sonic 2 android</a></li>
-            <li><a href="https://drive.google.com/file/d/1ndqncHdLO52Jr9u5-FtNF6N8jD2Gz2wz/view?usp=drive_link" target="_blank">Sonic.EXE PC</a></li>
-            <li><a href="https://drive.google.com/file/d/1FmDF3ryTv-3ilLoRpJ1AmFMFTM0zGfnV/view?usp=drive_link" target="_blank">Spotify Android</a></li>
-            <!-- Agrega más juegos aquí -->
-        </ul>
+        <button onclick="convert()">Convertir</button>
+        <div class="result" id="result"></div>
     </div>
 
     <script>
-        function searchMovie() {
-            var input, filter, movieList, video, source, i, txtValue;
-            input = document.getElementById('searchInput');
-            filter = input.value.toUpperCase();
-            movieList = document.getElementById("movieList");
-            video = movieList.getElementsByTagName('video');
+        function convert() {
+            const inputValue = parseFloat(document.getElementById("inputValue").value);
+            const unitType = document.getElementById("unitType").value;
+            const resultField = document.getElementById("result");
+            let result;
 
-            for (i = 0; i < video.length; i++) {
-                source = video[i].getElementsByTagName('source')[0];
-                txtValue = source.src || source.getAttribute('src');
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    video[i].style.display = "";
-                } else {
-                    video[i].style.display = "none";
-                }
+            if (isNaN(inputValue)) {
+                resultField.textContent = "Por favor, introduce un número válido.";
+                return;
             }
-        }
 
-        function copyCVU() {
-            var cvuInput = document.querySelector('.donation-section input');
-            cvuInput.select();
-            document.execCommand('copy');
-            alert('CVU copiado: ' + cvuInput.value);
-        }
-
-        function toggleMenu() {
-            var menuContent = document.getElementById("menuContent");
-            if (menuContent.style.display === "block") {
-                menuContent.style.display = "none";
-            } else {
-                menuContent.style.display = "block";
+            switch (unitType) {
+                case "cToF":
+                    result = (inputValue * 9/5) + 32;
+                    resultField.textContent = `${inputValue} °C son ${result.toFixed(2)} °F.`;
+                    break;
+                case "fToC":
+                    result = (inputValue - 32) * 5/9;
+                    resultField.textContent = `${inputValue} °F son ${result.toFixed(2)} °C.`;
+                    break;
+                case "kmToMi":
+                    result = inputValue * 0.621371;
+                    resultField.textContent = `${inputValue} km son ${result.toFixed(2)} millas.`;
+                    break;
+                case "miToKm":
+                    result = inputValue / 0.621371;
+                    resultField.textContent = `${inputValue} millas son ${result.toFixed(2)} km.`;
+                    break;
+                case "mToCm":
+                    result = inputValue * 100;
+                    resultField.textContent = `${inputValue} m son ${result.toFixed(2)} cm.`;
+                    break;
+                case "cmToM":
+                    result = inputValue / 100;
+                    resultField.textContent = `${inputValue} cm son ${result.toFixed(2)} m.`;
+                    break;
+                default:
+                    resultField.textContent = "Conversión no válida.";
             }
-        }
-
-        function showSection(sectionId) {
-            var sections = document.getElementsByClassName('section');
-            for (var i = 0; i < sections.length; i++) {
-                sections[i].classList.remove('active');
-            }
-            document.getElementById(sectionId).classList.add('active');
-        }
-
-        function searchGame() {
-            var input, filter, gamesList, li, a, i, txtValue;
-            input = document.getElementById('searchGameInput');
-            filter = input.value.toUpperCase();
-            gamesList = document.getElementById("gamesList");
-            li = gamesList.getElementsByTagName('li');
-
-            for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName('a')[0];
-                txtValue = a.textContent || a.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
-            }
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
         }
     </script>
 </body>
